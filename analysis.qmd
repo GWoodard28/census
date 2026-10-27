@@ -72,3 +72,31 @@ edu_state |>
   ) +
   theme_minimal()
 ```
+
+```{r}
+#| message: false
+age_ca <- get_acs(
+  geography = "county",
+  variables = c(
+    median_age = "B01002_001",
+    population = "B01003_001"
+  ),
+  state = "CA",
+  year = 2020,
+  geometry = FALSE
+)
+```
+
+```{r}
+age_ca |>
+  select(GEOID, NAME, variable, estimate) |>
+  pivot_wider(names_from = variable, values_from = estimate) |>
+  ggplot(aes(x = population, y = median_age)) +
+  geom_point() +
+  labs(
+    title = "County Population and Median Age in California",
+    x = "Population",
+    y = "Median age"
+  ) +
+  theme_minimal()
+```
